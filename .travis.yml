@@ -1,0 +1,11 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t correialabbate/docker-react -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true correialabbate/docker-react npm run test -- --coverage
