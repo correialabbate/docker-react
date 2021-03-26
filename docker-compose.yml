@@ -1,0 +1,30 @@
+# required
+version: '3'
+
+services:
+  # serviço web (react)
+  web:
+    # procura pelo Dockerfile no path
+    build:
+      # local dos arquivos pra img
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    # igual port-forwarding
+    volumes:
+      # n faz o map pra esse (: required)
+      - /home/node/app/node_modules
+      # faz o map dos arquivos locais em . para os dentro de /home/node/app do container
+      - .:/home/node/app
+
+  # test service
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /home/node/app/node_modules
+      - .:/home/node/app
+    # override starting commang
+    command: ["npm", "run", "test"]
